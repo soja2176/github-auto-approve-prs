@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Auto-approve PRs</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<main class="container">
+  <header class="topbar">
+    <h1>Auto-approve PRs</h1>
+    <div id="connection-badge"><em>Cargando...</em></div>
+  </header>
+
+  <section id="connect-section" hidden>
+    <article>
+      <p>Conectá tu cuenta de GitHub para empezar a aprobar automáticamente los PRs donde figurás como assignee o reviewer solicitado.</p>
+      <a role="button" href="/auth/github">Conectar con GitHub</a>
+    </article>
+  </section>
+
+  <section id="dashboard-section" hidden>
+    <div class="grid stats-grid">
+      <article><h2 id="stat-total">-</h2><p>Aprobados en total</p></article>
+      <article><h2 id="stat-today">-</h2><p>Aprobados hoy</p></article>
+      <article><h2 id="stat-blocked">-</h2><p>Bloqueados (requieren revisión)</p></article>
+      <article><h2 id="stat-last-run">-</h2><p>Última ejecución</p></article>
+    </div>
+
+    <article>
+      <header><strong>Configuración</strong></header>
+      <div class="grid">
+        <label>Organización
+          <select id="org-select"></select>
+        </label>
+        <label>Intervalo (minutos)
+          <input type="number" id="interval-input" min="1" />
+        </label>
+        <label>Automatización activa
+          <input type="checkbox" id="enabled-input" role="switch" />
+        </label>
+      </div>
+      <div class="actions">
+        <button id="save-settings">Guardar</button>
+        <button id="run-now" class="secondary">Ejecutar ahora</button>
+        <button id="disconnect" class="contrast outline">Desconectar GitHub</button>
+      </div>
+      <p id="run-now-result" class="muted"></p>
+    </article>
+
+    <article>
+      <header><strong>Aprobaciones por día (últimos 14 días)</strong></header>
+      <canvas id="chart-daily" height="80"></canvas>
+    </article>
+
+    <article>
+      <header><strong>PRs aprobados</strong></header>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Repo</th><th>PR</th><th>Autor</th><th>Motivo</th><th>Cambios</th><th>Aprobado</th></tr>
+          </thead>
+          <tbody id="approved-table-body"></tbody>
+        </table>
+      </div>
+    </article>
+
+    <article>
+      <header><strong>Bloqueados (requieren revisión manual)</strong></header>
+      <p class="muted">PRs con conflictos de merge, checks fallando, cambios ya solicitados por un humano, u otro bloqueo que reporta GitHub. No se aprueban automáticamente.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Repo</th><th>PR</th><th>Autor</th><th>Motivo</th><th>Detalle</th><th>Acción en GitHub</th><th>Fecha</th></tr></thead>
+          <tbody id="blocked-table-body"></tbody>
+        </table>
+      </div>
+    </article>
+
+    <article>
+      <header><strong>Fallidos</strong></header>
+      <p class="muted">Errores inesperados al intentar aprobar (ej. no se puede aprobar tu propio PR).</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Repo</th><th>PR</th><th>Error</th><th>Fecha</th></tr></thead>
+          <tbody id="failed-table-body"></tbody>
+        </table>
+      </div>
+    </article>
+
+    <article>
+      <header><strong>Historial de ejecuciones</strong></header>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Inicio</th><th>Encontrados</th><th>Aprobados</th><th>Bloqueados</th><th>Fallidos</th><th>Error</th></tr></thead>
+          <tbody id="runs-table-body"></tbody>
+        </table>
+      </div>
+    </article>
+  </section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="app.js"></script>
+</body>
+</html>

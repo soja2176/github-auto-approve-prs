@@ -1,0 +1,38 @@
+body {
+  max-width: 1100px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.stats-grid h2 {
+  margin-bottom: 0;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.muted {
+  color: var(--pico-muted-color);
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  font-size: 0.9rem;
+}
+
+details summary {
+  cursor: pointer;
+}
